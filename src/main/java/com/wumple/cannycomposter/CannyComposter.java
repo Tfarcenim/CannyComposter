@@ -1,16 +1,17 @@
 package com.wumple.cannycomposter;
 
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLFingerprintViolationEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+
+import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
 
 @Mod(Reference.MOD_ID)
 public class CannyComposter
@@ -20,22 +21,23 @@ public class CannyComposter
 		return LogManager.getLogger(Reference.MOD_ID);
 	}
 	
-	public CannyComposter()
-	{
-		ConfigManager.register(ModLoadingContext.get());
-
-		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-		modEventBus.addListener(this::setup);
-
-		// Register ourselves for server and other game events we are interested in
-		MinecraftForge.EVENT_BUS.register(this);
+	public CannyComposter() {
+		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, SERVER_SPEC);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(ConfigManager::onReload);
+		EVENT_BUS.addListener(CompostItem::tryUseEvent);
+		EVENT_BUS.addListener(CannyComposterEvent::useComposterEvent);
 	}
-	
-	public void setup(final FMLCommonSetupEvent event)
-	{
+
+	public static final ConfigManager SERVER;
+	public static final ForgeConfigSpec SERVER_SPEC;
+
+	static {
+		final Pair<ConfigManager, ForgeConfigSpec> specPair2 = new ForgeConfigSpec.Builder().configure(ConfigManager::new);
+		SERVER_SPEC = specPair2.getRight();
+		SERVER = specPair2.getLeft();
 	}
-	
-	@SubscribeEvent
+
+	//@SubscribeEvent
 	public void onFingerprintViolation(final FMLFingerprintViolationEvent event)
 	{
 		getLogger().warn("Invalid fingerprint detected! The file " + event.getSource().getName()

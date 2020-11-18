@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "com.wumple.cannycomposter.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "nightmarecraft.refmap.json",
+  "mixins": [
+    "ComposterBlockMixin"
+  ],
+  "client": [
+
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}
