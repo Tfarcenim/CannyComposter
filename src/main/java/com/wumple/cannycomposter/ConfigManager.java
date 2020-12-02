@@ -220,7 +220,7 @@ public class ConfigManager {
     }
 
     public static void onReload(final ModConfig.ModConfigEvent configEvent) {
-        if (configEvent.getConfig().getModId().equals(Reference.MOD_ID)) {
+        if (configEvent.getConfig().getModId().equals(CannyComposter.MOD_ID)) {
             loadConfig();
         }
     }

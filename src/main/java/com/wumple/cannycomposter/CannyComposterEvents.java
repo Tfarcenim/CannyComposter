@@ -1,6 +1,5 @@
 package com.wumple.cannycomposter;
 
-import com.wumple.cannycomposter.ConfigManager;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ComposterBlock;
@@ -14,7 +13,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
-public class CannyComposterEvent {
+public class CannyComposterEvents {
 
 	protected static boolean isCompostable(ItemStack itemstack) {
 		return ConfigManager.compost.containsKey(itemstack.getItem());
@@ -82,7 +81,7 @@ public class CannyComposterEvent {
 	public static void useComposterEvent(PlayerInteractEvent.RightClickBlock e) {
 		World world = e.getWorld();
 		BlockState state = world.getBlockState(e.getPos());
-		if (state.getBlock() == Blocks.COMPOSTER && !e.getItemStack().isEmpty()) {
+		if (state.getBlock() == Blocks.COMPOSTER && !e.getItemStack().isEmpty() && !world.isRemote) {
 			if (addItem(state, world, e.getPos(), e.getItemStack()))
 			e.setCanceled(true);
 		}

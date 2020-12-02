@@ -2,7 +2,7 @@
   "required": true,
   "package": "com.wumple.cannycomposter.mixin",
   "compatibilityLevel": "JAVA_8",
-  "refmap": "nightmarecraft.refmap.json",
+  "refmap": "cannycomposter.refmap.json",
   "mixins": [
     "ComposterBlockMixin"
   ],
